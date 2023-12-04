@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .purchase-text {
+            font-size: 28px; /* Increased font size */
+            font-weight: 600; /* Bolder font */
+            color: #555;
+            margin: 20px 0;
+        }
+
+        .link-container, .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        a.link {
+            color: #007bff;
+            text-decoration: none;
+            margin: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        a.link:hover {
+            color: #0056b3;
+        }
+
+        a.button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+            transition: background-color 0.3s ease;
+        }
+
+        a.button:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .purchase-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* Spacing between select box and button */
+            margin-top: 20px;
+        }
+
+        .select-style {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+        }
+
+        .submit-style {
+            /* Existing styles for input[type="submit"] */
+        }
+
+        /* MAIN 버튼에 대한 추가 스타일 */
+        .main-button {
+            margin-top: 20px; /* 버튼 사이의 공간 확보 */
+        }
+
+        /* Form과 MAIN 버튼을 위한 컨테이너 스타일 */
+        .form-container, .button-container {
+            margin-top: 20px; /* 컨테이너 사이의 공간 확보 */
+        }
+
+        /* MAIN 버튼 스타일 조정 */
+        .main-button {
+            display: inline-block; /* 버튼을 인라인 블록 요소로 변경 */
+            width: auto; /* 너비를 자동으로 조절 */
+            padding: 15px 30px; /* 패딩을 조절하여 버튼 크기 변경 */
+            margin: 0 auto; /* 버튼을 중앙에 배치 */
+            background-color: red;
+            font-size: 18px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+    </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '2047008732329275');
+        fbq('track', 'PageView');
+
+        var url = location.href;
+        if(url.endsWith('AddToCart')){
+            fbq('track', 'AddToCart');
+        }
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=2047008732329275&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+
+
+</head>
+<body>
+
+<div class="container">
+    <h1>MTP Test. Korea Market.</h1>
+    <span class="purchase-text"  th:text="${title}"></span>
+<hr>
+    <span class="purchase-text"  th:text="${message}"></span>
+<br>
+<hr>
+    <div class="link-container">
+        <a  class="link" th:href="@{/{previousPath}/AddToCart (previousPath=${previousPath})}" th:text="AddToCart"></a> <br>
+        <a  class="link" th:href="@{/{previousPath}/PageView (previousPath=${previousPath})}" th:text="PageView"></a> <br>
+    </div>
+
+    <div class="form-container">
+        <form th:action="@{/{previousPath}/Purchase (previousPath=${previousPath})}" method="post" class="form-container">
+            <select name="cost" id="cost" class="select-style">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+            <input type="submit" value="Purchase" class="submit-style" />
+        </form>
+    </div>
+
+    <div class="button-container">
+        <!-- 버튼이 겹치지 않도록 별도의 div 내에 배치 -->
+        <a class="button main-button" th:href="@{/}" style="background-color: red; font-size: 18px; padding: 15px 30px;">Integration Page</a>
+    </div>
+
+
+</div>
+
+<footer>
+    <p>&copy; 2023 MTP. All rights reserved.</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.querySelector('form');
+
+        form.addEventListener('submit', function(event) {
+            var formData = new FormData(form);
+            var formObject = {};
+            formData.forEach(function(value, key) {
+                formObject[key] = value;
+            });
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'formSubmission',
+                'formData': formObject
+            });
+        });
+    });
+</script>
+
+
+</body>
+</html>

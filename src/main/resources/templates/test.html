@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MTP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .purchase-text {
+            font-size: 28px; /* Increased font size */
+            font-weight: 600; /* Bolder font */
+            color: #555;
+            margin: 20px 0;
+        }
+
+        .link-container, .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        a.link {
+            color: #007bff;
+            text-decoration: none;
+            margin: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        a.link:hover {
+            color: #0056b3;
+        }
+
+        a.button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+            transition: background-color 0.3s ease;
+        }
+
+        a.button:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+
+
+        .purchase-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* Spacing between select box and button */
+            margin-top: 20px;
+        }
+
+        .select-style {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+        }
+
+        .submit-style {
+            /* Existing styles for input[type="submit"] */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>MTP Test. Korea Market.</h1>
+    <span class="purchase-text">This is the Purchase Page.</span>
+
+    <div class="link-container">
+        <a href="/PageView" class="link">PageView</a>
+        <a href="/AddToCart" class="link">AddToCart</a>
+        <form action="/Purchase" method="post" class="purchase-form">
+            <select name="quantity" id="quantity" class="select-style">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+            <input type="submit" value="Purchase" class="submit-style" />
+        </form>
+    </div>
+
+    </form>
+</div>
+
+<footer>
+    <p>&copy; 2023 MTP. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

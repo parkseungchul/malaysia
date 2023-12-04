@@ -1,0 +1,24 @@
+server:
+  ssl:
+    enabled: true
+    key-store: file:D:\github\parkseungchul\malaysia\src\main\resources\mtpkorea.pfx
+    key-store-password: ccie6198
+    key-store-type: PKCS12
+    trust-store: file:D:\github\parkseungchul\malaysia\src\main\resources\trust.jks
+    trust-store-password: ccie6198
+  port: 8443
+
+custom:
+  chat-gpt:
+    api-key: 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
+    chat-url: https://api.openai.com/v1/chat/completions
+    assistant-url: https://api.openai.com/v1/threads
+    assistant-id: asst_CHDxv2KzeZTP4xmdfnMCDE12
+  server:
+    port: 8080
+logging:
+  level:
+    root: error
+    com.psc: debug
+  file:
+    encoding: UTF-8

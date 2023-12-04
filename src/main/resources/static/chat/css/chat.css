@@ -1,0 +1,118 @@
+/* 기본 스타일 */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+#chat-container {
+    width: 60%;
+    max-width: 50rem;
+    min-width: 25rem;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-box {
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    padding: 1.25rem;
+    white-space: pre-wrap;
+    max-height: 50vh;
+}
+
+.input-container {
+    display: flex;
+    padding: 0.5rem;
+    align-items: center;
+    background-color: #e6e6e6;
+}
+
+.chat-input {
+    flex-grow: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 0.3rem;
+    margin-right: 0.5rem;
+}
+
+.send-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.send-btn, .reset-btn {
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    padding: 0.6rem 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.send-btn {
+    background-color: blue;
+    color: white;
+}
+
+.send-btn:hover {
+    background-color: darkblue;
+}
+
+.reset-btn {
+    background-color: red;
+    color: white;
+    padding: 0.5rem 0.8rem;
+}
+
+.reset-btn:hover {
+    background-color: darkred;
+}
+
+/* 버튼 로딩 애니메이션 */
+@keyframes loading {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+    100% { content: ''; }
+}
+
+.send-btn.loading::after {
+    content: '';
+    animation: loading 2s linear infinite;
+}
+
+.message {
+    padding: 0.6rem 1.2rem;
+    margin-bottom: 0.9rem;
+    border-radius: 0.4rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.user-message {
+    background-color: #daf8cb;
+    align-self: flex-end;
+    margin-right: 0.6rem;
+}
+
+.server-message {
+    background-color: #ffffff;
+    align-self: flex-start;
+    margin-left: 0.6rem;
+}
+
+.server-message::before {
+    content: '→ ';
+    margin-right: 0.3rem;
+}

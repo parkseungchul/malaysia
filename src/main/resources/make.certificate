@@ -1,0 +1,3 @@
+openssl pkcs12 -export -in certificate.crt -inkey private.key -out mtpkorea.pfx
+openssl pkcs12 -in mtpkorea.pfx -clcerts -nokeys -out mtpkorea.crt
+keytool -import -alias mtpkorea -file mtpkorea.crt -keystore trust.jks

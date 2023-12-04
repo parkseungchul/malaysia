@@ -1,0 +1,166 @@
+/* 크리스마스 테마 스타일 */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #009966; /* 크리스마스 트리의 녹색 배경색 */
+    color: #fff; /* 흰색 텍스트 색상 */
+    font-family: 'Arial', sans-serif; /* 글꼴 설정 */
+}
+
+#chat-container {
+    width: 60%;
+    max-width: 50rem;
+    min-width: 25rem;
+    background-color: #ff3333; /* 붉은색 루돌프 코 배경색 */
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3); /* 그림자 스타일 변경 */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-box {
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: #fff; /* 흰색 배경색 */
+    padding: 1.25rem;
+    white-space: pre-wrap;
+    max-height: 50vh;
+}
+
+.input-container {
+    display: flex;
+    padding: 0.5rem;
+    align-items: center;
+    background-color: #ff3333; /* 붉은색 루돌프 코 배경색 */
+}
+
+.chat-input {
+    flex-grow: 1;
+    padding: 0.5rem;
+    border: 1px solid #009966; /* 크리스마스 트리 녹색 테두리 색상 */
+    border-radius: 0.3rem;
+    margin-right: 0.5rem;
+    background-color: #fff; /* 흰색 입력창 배경색 */
+    color: #000; /* 검은색 텍스트 색상 */
+}
+
+.send-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.send-btn, .reset-btn {
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    padding: 0.6rem 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.send-btn {
+    background-color: #ffcc00; /* 크리스마스 금별별 빛깔의 별 배경색 */
+    color: #fff; /* 흰색 텍스트 색상 */
+}
+
+.send-btn:hover {
+    background-color: #ffdb4d; /* 더 밝은 금색 */
+}
+
+.reset-btn {
+    background-color: #009966; /* 크리스마스 트리의 녹색 배경색 */
+    color: #fff; /* 흰색 텍스트 색상 */
+    padding: 0.5rem 0.8rem;
+}
+
+.reset-btn:hover {
+    background-color: #00b377; /* 더 밝은 녹색 */
+}
+
+/* 버튼 로딩 애니메이션 */
+@keyframes loading {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+    100% { content: ''; }
+}
+
+.send-btn.loading::after {
+    content: '';
+    animation: loading 2s linear infinite;
+}
+
+.message {
+    padding: 0.6rem 1.2rem;
+    margin-bottom: 0.9rem;
+    border-radius: 0.4rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 그림자 스타일 변경 */
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #000; /* 검은색 텍스트 색상 */
+}
+
+.user-message {
+    background-color: #009966; /* 크리스마스 트리의 녹색 배경색 */
+    align-self: flex-end;
+    margin-right: 0.6rem;
+}
+
+.server-message {
+    background-color: #ff3333; /* 붉은색 루돌프 코 배경색 */
+    align-self: flex-start;
+    margin-left: 0.6rem;
+}
+
+.server-message::before {
+    content: '→ ';
+    margin-right: 0.3rem;
+}
+
+
+
+/* 눈 내리는 애니메이션 스타일 */
+#snowfall {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.snowflake {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: snowfall 5s linear infinite;
+}
+
+#announcement-box {
+    background-color: #f8f8f8; /* 배경색 */
+    color: #333; /* 텍스트 색상 */
+    padding: 10px; /* 패딩 */
+    border-bottom: 1px solid #e0e0e0; /* 하단 테두리 */
+    width: 60%; /* 너비 설정 */
+    margin: 0 auto; /* 상하 마진 0, 좌우 마진 자동 */
+    box-sizing: border-box; /* 패딩과 테두리를 너비에 포함 */
+    white-space: pre-wrap;
+}
+
+@keyframes snowfall {
+    0% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}

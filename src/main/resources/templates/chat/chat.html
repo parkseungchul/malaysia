@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stylish Chat</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/chat/css/chat2.css}">
+</head>
+<body>
+<div id="snowfall"></div>
+<div id="chat-container">
+  <div name="chat-box" id="chat-box" class="chat-box">
+  </div>
+
+  <div class="input-container">
+    <input type="text" id="chat-input" class="chat-input" placeholder="메시지 입력...">
+    <div class="send-container">
+      <button id="send-btn" class="send-btn">Send</button>
+      <button id="reset-btn" class="reset-btn">Reset</button>
+      <div class="loader"></div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/chat/js/chat.js}"></script>
+</body>
+</html>
