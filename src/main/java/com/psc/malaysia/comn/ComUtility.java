@@ -23,8 +23,6 @@ public class ComUtility {
 
     public String changeToWeb(String content){
         content = content.replaceAll("\n", "<br>");
-        //content = "<p>" + content + "</p>";
-        //log.debug("==================>"+content);
         return content;
     }
 
@@ -48,10 +46,8 @@ public class ComUtility {
     }
 
     public HttpResponse<String> httpRequestBuilder(HttpMethod httpMethod, String apiURL,  Map<String, String> data) throws IOException, InterruptedException {
-
         log.debug("working method: "+httpMethod.toString());
         log.debug("working url: "+apiURL);
-
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest.Builder builder = HttpRequest.newBuilder();
         if (httpMethod == HttpMethod.GET && data != null && !data.isEmpty()) {
