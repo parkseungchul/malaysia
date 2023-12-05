@@ -36,11 +36,9 @@ public class ComUtility {
         String body = response.body();
         log.debug(tag + "- Response status code: " + statusCode);
         log.debug(tag + "- Response body: " + body);
-
         if(valueType == null){
             return null;
         }
-
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(body, valueType);
     }
