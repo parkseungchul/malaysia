@@ -31,7 +31,6 @@ public class AssistantController {
 
     @Value("${custom.chat-gpt.assistant-url}")
     private String assistantURL;
-
     private final ComUtility comUtility;
     public AssistantController(ComUtility comUtility) {
         this.comUtility = comUtility;
@@ -42,7 +41,6 @@ public class AssistantController {
 
         HttpSession  httpSession =  request.getSession();
         httpSession.setAttribute("assistant_thread_id", "");
-
 
         Map<String, String> data = null;
         HttpResponse<String> response = comUtility.httpRequestBuilder(HttpMethod.POST, assistantURL, null);
@@ -107,7 +105,6 @@ public class AssistantController {
                 String query = "$.status";
 
                 String status = JsonPath.read(response.body(), query);
-                log.debug("=====> Status: " + status);
                 if(status.equals("completed")){
                     break;
                 }else if(status.equals("in_progress")){
@@ -119,7 +116,7 @@ public class AssistantController {
             }
 
             if(isQueued){
-                return new ResponseObject("Server is busy or need to refresh F5");
+                throw new Exception("Queueing");
             }
 
             // 6. Get Message
@@ -152,9 +149,6 @@ public class AssistantController {
                 return new ResponseObject("Server is busy or Refresh F5");
             }
         }
-
-
-
         return responseObject;
     }
 
