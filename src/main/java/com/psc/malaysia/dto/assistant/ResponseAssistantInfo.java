@@ -1,16 +1,10 @@
 package com.psc.malaysia.dto.assistant;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
+import lombok.*;
 import java.util.List;
 import java.util.Map;
-
-@Getter
-@Setter
-@ToString
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class ResponseAssistantInfo {
     private String id;
@@ -31,5 +25,4 @@ public class ResponseAssistantInfo {
     private List<String> file_ids;
     private Map<String, Object> metadata;
 
-    public ResponseAssistantInfo(){}
 }
