@@ -1,0 +1,242 @@
+1. thread
+curl https://api.openai.com/v1/threads \
+  -X POST \
+  -H "OpenAI-Beta: assistants=v1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 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" 
+===
+{
+  "id": "thread_S6oqM4lqVG7cD7GmlrbwJYVR",
+  "object": "thread",
+  "created_at": 1701664045,
+  "metadata": {}
+}
+===
+2. use id, send data
+curl https://api.openai.com/v1/threads/thread_S6oqM4lqVG7cD7GmlrbwJYVR/messages \
+  -X POST \
+  -H "OpenAI-Beta: assistants=v1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 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" \
+  -d '{ "role": "user", "content": "hi\n" }'
+===
+{
+  "id": "msg_9fW3510rIyrqXCovC1uZl4TC",
+  "object": "thread.message",
+  "created_at": 1701664429,
+  "thread_id": "thread_S6oqM4lqVG7cD7GmlrbwJYVR",
+  "role": "user",
+  "content": [
+    {
+      "type": "text",
+      "text": {
+        "value": "hi\n",
+        "annotations": []
+      }
+    }
+  ],
+  "file_ids": [],
+  "assistant_id": null,
+  "run_id": null,
+  "metadata": {}
+}
+===
+
+3. send assistant id
+curl https://api.openai.com/v1/threads/thread_S6oqM4lqVG7cD7GmlrbwJYVR/runs \
+  -X POST \
+  -H "OpenAI-Beta: assistants=v1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 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" \
+  -d '{ "assistant_id": "asst_CHDxv2KzeZTP4xmdfnMCDE12"}'
+===
+{
+  "id": "run_KiZmoW3FmrmRrCThf4fghwBu",
+  "object": "thread.run",
+  "created_at": 1701664729,
+  "assistant_id": "asst_CHDxv2KzeZTP4xmdfnMCDE12",
+  "thread_id": "thread_S6oqM4lqVG7cD7GmlrbwJYVR",
+  "status": "queued",
+  "started_at": null,
+  "expires_at": 1701665329,
+  "cancelled_at": null,
+  "failed_at": null,
+  "completed_at": null,
+  "last_error": null,
+  "model": "gpt-4",
+  "instructions": "1. You are a translator.\n2. Convert all inputs into English using words commonly used in everyday life.\n3. If the input is in English, provide a summary in list format to explain whether it is correct or incorrect.\n4. The result word must be placed at the end of the line with '->'.",
+  "tools": [],
+  "file_ids": [],
+  "metadata": {}
+===
+
+4. get the message.
+curl https://api.openai.com/v1/threads/thread_S6oqM4lqVG7cD7GmlrbwJYVR/messages \
+  -H "OpenAI-Beta: assistants=v1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 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" \
+===
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "msg_THWhUSdwBFZxPTeqjks9e4n5",
+      "object": "thread.message",
+      "created_at": 1701664730,
+      "thread_id": "thread_S6oqM4lqVG7cD7GmlrbwJYVR",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": {
+            "value": "1. The input is already in English.\n2. The word used is common and correct.\n3. It is a greeting.\n\n-> Correct",
+            "annotations": []
+          }
+        }
+      ],
+      "file_ids": [],
+      "assistant_id": "asst_CHDxv2KzeZTP4xmdfnMCDE12",
+      "run_id": "run_KiZmoW3FmrmRrCThf4fghwBu",
+      "metadata": {}
+    },
+    {
+      "id": "msg_9fW3510rIyrqXCovC1uZl4TC",
+      "object": "thread.message",
+      "created_at": 1701664429,
+      "thread_id": "thread_S6oqM4lqVG7cD7GmlrbwJYVR",
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": {
+            "value": "hi\n",
+            "annotations": []
+          }
+        }
+      ],
+      "file_ids": [],
+      "assistant_id": null,
+      "run_id": null,
+      "metadata": {}
+    }
+  ],
+  "first_id": "msg_THWhUSdwBFZxPTeqjks9e4n5",
+  "last_id": "msg_9fW3510rIyrqXCovC1uZl4TC",
+  "has_more": false
+==============================================================
+
+again
+
+2. use id, send data
+curl https://api.openai.com/v1/threads/thread_S6oqM4lqVG7cD7GmlrbwJYVR/messages \
+  -X POST \
+  -H "OpenAI-Beta: assistants=v1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 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" \
+  -d '{ "role": "user", "content": "i am boring\n" }'
+
+3. send assistant id
+curl https://api.openai.com/v1/threads/thread_S6oqM4lqVG7cD7GmlrbwJYVR/runs \
+  -X POST \
+  -H "OpenAI-Beta: assistants=v1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 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" \
+  -d '{ "assistant_id": "asst_CHDxv2KzeZTP4xmdfnMCDE12"}'
+
+4. get the message.
+curl https://api.openai.com/v1/threads/thread_S6oqM4lqVG7cD7GmlrbwJYVR/messages \
+  -H "OpenAI-Beta: assistants=v1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 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" 
+
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "msg_dqPTWZjzhBXdFu6dv0KR3ziA",
+      "object": "thread.message",
+      "created_at": 1701665753,
+      "thread_id": "thread_S6oqM4lqVG7cD7GmlrbwJYVR",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": {
+            "value": "1. The input is in English.\n2. The sentence structure is correct but the adjective used is not.\n3. It should be \"I am bored\" to express feeling bored.\n4. \"I am boring\" means that the person is uninteresting, not that they are feeling uninterested.\n\n-> Incorrect",
+            "annotations": []
+          }
+        }
+      ],
+      "file_ids": [],
+      "assistant_id": "asst_CHDxv2KzeZTP4xmdfnMCDE12",
+      "run_id": "run_0QUmhjLberyNZs4SXuFK4J77",
+      "metadata": {}
+    },
+    {
+      "id": "msg_23Ud4UYyX69a8UonQIrQeGx1",
+      "object": "thread.message",
+      "created_at": 1701665703,
+      "thread_id": "thread_S6oqM4lqVG7cD7GmlrbwJYVR",
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": {
+            "value": "i am boring\n",
+            "annotations": []
+          }
+        }
+      ],
+      "file_ids": [],
+      "assistant_id": null,
+      "run_id": null,
+      "metadata": {}
+    },
+    {
+      "id": "msg_THWhUSdwBFZxPTeqjks9e4n5",
+      "object": "thread.message",
+      "created_at": 1701664730,
+      "thread_id": "thread_S6oqM4lqVG7cD7GmlrbwJYVR",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": {
+            "value": "1. The input is already in English.\n2. The word used is common and correct.\n3. It is a greeting.\n\n-> Correct",
+            "annotations": []
+          }
+        }
+      ],
+      "file_ids": [],
+      "assistant_id": "asst_CHDxv2KzeZTP4xmdfnMCDE12",
+      "run_id": "run_KiZmoW3FmrmRrCThf4fghwBu",
+      "metadata": {}
+    },
+    {
+      "id": "msg_9fW3510rIyrqXCovC1uZl4TC",
+      "object": "thread.message",
+      "created_at": 1701664429,
+      "thread_id": "thread_S6oqM4lqVG7cD7GmlrbwJYVR",
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": {
+            "value": "hi\n",
+            "annotations": []
+          }
+        }
+      ],
+      "file_ids": [],
+      "assistant_id": null,
+      "run_id": null,
+      "metadata": {}
+    }
+  ],
+  "first_id": "msg_dqPTWZjzhBXdFu6dv0KR3ziA",
+  "last_id": "msg_9fW3510rIyrqXCovC1uZl4TC",
+  "has_more": false
+
+
+
+
