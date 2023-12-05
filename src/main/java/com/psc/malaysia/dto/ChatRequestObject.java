@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 public class ChatRequestObject {
     private static ChatRequestObject instance;
     private ChatRequestObject() {

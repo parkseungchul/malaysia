@@ -1,31 +1,15 @@
 document.getElementById("send-btn").addEventListener("click", sendMessage);
 
 document.getElementById("chat-input").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
+    var sendButton = document.getElementById("send-btn");
+    if (event.key === "Enter" && !sendButton.disabled) {
         sendMessage();
     }
 });
 
 document.getElementById("reset-btn").addEventListener("click", function() {
-
-    fetch('/chat/ajax', {
-        method: 'GET'
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not OK');
-            }
-            // 서버로부터의 응답이 성공적인 경우의 처리를 추가할 수 있음
-            var chatBox = document.getElementById("chat-box");
-            chatBox.innerHTML = '';
-
-            console.log("Reset request was successful");
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-        });
+    window.location.href = '/assistant/assistant';
 });
-
 
 function sendMessage() {
     var inputElement = document.getElementById("chat-input");
