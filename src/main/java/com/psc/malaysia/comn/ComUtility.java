@@ -14,26 +14,33 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+// Lombok annotation for logging
 @Slf4j
+// Indicates that this class is a Spring service
 @Service
 public class ComUtility {
 
+    // Injects the API key from the application properties
     @Value("${custom.chat-gpt.api-key}")
     private String apiKey;
 
+    // Method to replace newline characters with HTML line breaks for web display
     public String changeToWeb(String content){
         content = content.replaceAll("\n", "<br>");
         return content;
     }
 
+    // Method to get a condition string, currently returns a blank space
     public String getCondition(){
         String condition = " ";
         return condition;
     }
 
+    // Generic method to convert JSON response to an object of specified type
     public <T> T getObjectResponse(HttpResponse<String> response, String tag, Class<T> valueType) throws JsonProcessingException {
         int statusCode =  response.statusCode();
         String body = response.body();
+        // Logging the status code and body of the response
         log.debug(tag + "- Response status code: " + statusCode);
         log.debug(tag + "- Response body: " + body);
         if(valueType == null){
@@ -43,15 +50,19 @@ public class ComUtility {
         return mapper.readValue(body, valueType);
     }
 
+    // Method to build and execute an HTTP request
     public HttpResponse<String> httpRequestBuilder(HttpMethod httpMethod, String apiURL,  Map<String, String> data) throws IOException, InterruptedException {
+        // Logging the HTTP method and URL
         log.debug("working method: "+httpMethod.toString());
         log.debug("working url: "+apiURL);
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest.Builder builder = HttpRequest.newBuilder();
+        // Appending query parameters for GET requests
         if (httpMethod == HttpMethod.GET && data != null && !data.isEmpty()) {
-            apiURL += "?" + data; // must be data query style
+            apiURL += "?" + data; // Data should be formatted as a query string
         }
         builder.uri(URI.create(apiURL));
+        // Handling POST requests
         if(httpMethod == HttpMethod.POST){
             if(data != null && !data.isEmpty()){
                 ObjectMapper mapper = new ObjectMapper();
@@ -64,15 +75,18 @@ public class ComUtility {
             builder.GET();
         }
 
+        // Default headers for the request
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("OpenAI-Beta", " assistants=v1");
         headers.put("Content-Type", "  application/json");
+        // Adds Authorization header if API key is available
         if (apiKey != null && !apiKey.isEmpty()) {
             builder.header("Authorization", "Bearer " + apiKey);
         }
         headers.forEach(builder::header);
         HttpRequest request = builder.build();
 
+        // Sending the request and getting the response
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response;
     }
