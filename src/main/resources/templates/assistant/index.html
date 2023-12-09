@@ -2,25 +2,38 @@
 <html>
 <head>
   <title>Assistant</title>
+  <!-- Link to the CSS file for styling. Replace with the correct path if necessary -->
   <link rel="stylesheet" type="text/css" th:href="@{/assistant/css/xmas.css}">
 </head>
 <body>
 
+<!-- Container for the snowfall effect -->
 <div id="snowfall"></div>
+
+<!-- Main chat container -->
 <div id="chat-container">
+  <!-- Box for displaying announcements or instructions -->
   <div id="announcement-box" th:utext="${instructions}"></div>
 
+  <!-- Chat box where messages will be displayed -->
   <div name="chat-box" id="chat-box" class="chat-box"></div>
 
+  <!-- Container for the input field and send/reset buttons -->
   <div class="input-container">
-    <input type="text" id="chat-input" class="chat-input" placeholder="메시지 입력...">
+    <!-- Text input for typing messages -->
+    <input type="text" id="chat-input" class="chat-input" placeholder="Type a message...">
     <div class="send-container">
+      <!-- Send button to submit the message -->
       <button id="send-btn" class="send-btn">Send</button>
+      <!-- Reset button to clear chat or refresh the page -->
       <button id="reset-btn" class="reset-btn">Reset</button>
+      <!-- Loader animation for visual feedback during processing -->
       <div class="loader"></div>
     </div>
   </div>
 </div>
+
+<!-- Link to the JavaScript file for chat functionality. Replace with the correct path if necessary -->
 <script th:src="@{/assistant/js/chat.js}"></script>
 </body>
 </html>
