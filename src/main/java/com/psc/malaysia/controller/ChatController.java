@@ -20,7 +20,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@Controller
+//@Controller
 @RequestMapping("/chat")
 public class ChatController {
 

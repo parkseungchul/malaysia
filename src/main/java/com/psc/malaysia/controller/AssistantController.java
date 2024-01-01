@@ -21,122 +21,111 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-// Lombok annotation for logging
 @Slf4j
-// Annotation to declare this class as a Spring MVC Controller
-@Controller
-// Base URL mapping for this controller
+//@Controller
 @RequestMapping("/assistant")
 public class AssistantController {
 
-    // Injecting values from application properties
     @Value("${custom.chat-gpt.assistant-id}")
     private String assistantId;
 
     @Value("${custom.chat-gpt.assistant-url}")
     private String assistantURL;
-
-    // Dependency injection of ComUtility
     private final ComUtility comUtility;
     public AssistantController(ComUtility comUtility) {
         this.comUtility = comUtility;
     }
 
-    // Mapping for the main page of the assistant
     @RequestMapping("/assistant")
     public String indexAssistant(HttpServletRequest request, ModelMap modelMap) throws IOException, InterruptedException {
 
-        // Creating a new session and setting an attribute
-        HttpSession httpSession = request.getSession();
+        HttpSession  httpSession =  request.getSession();
         httpSession.setAttribute("assistant_thread_id", "");
 
-        // Preparing and making an HTTP request to get a new thread ID
+        Map<String, String> data = null;
         HttpResponse<String> response = comUtility.httpRequestBuilder(HttpMethod.POST, assistantURL, null);
         ResponseThread responseThread = comUtility.getObjectResponse(response, "get thread", ResponseThread.class);
         String assistant_thread_id = responseThread.getId();
 
-        // Building the URL to get assistant info and making the request
         String assistantInfoURL = assistantURL + "/" + assistant_thread_id + "/runs";
-        Map<String, String> data = new HashMap<>();
+        data = new HashMap<String, String>();
         data.put("assistant_id", assistantId);
 
         response = comUtility.httpRequestBuilder(HttpMethod.POST, assistantInfoURL,  data);
         ResponseAssistantInfo responseAssistant = comUtility.getObjectResponse(response, "Get Assistant", ResponseAssistantInfo.class);
         log.debug(responseAssistant.toString());
 
-        // Adding the instructions to the modelMap after converting them for web
         modelMap.addAttribute("instructions", comUtility.changeToWeb(responseAssistant.getInstructions()));
 
-        // Finalizing the request
+        // finished
         comUtility.httpRequestBuilder(HttpMethod.GET, assistantInfoURL, null);
         return "assistant/index";
     }
 
-    // Endpoint to handle sending of user input and receiving response
     @PostMapping("/send.json")
     @ResponseBody
-    public ResponseObject send(HttpServletRequest request, @RequestBody String prompt) {
+    public ResponseObject send(HttpServletRequest request, @RequestBody String prompt)  {
 
-        HttpResponse<String> response;
-        Map<String, String> data;
+        HttpResponse<String> response = null;
+        Map<String, String> data = null;
         ResponseObject responseObject = new ResponseObject();
 
-        try {
-            // Step 1: Creating a new thread if necessary
-            HttpSession httpSession = request.getSession();
-            String assistant_thread_id = (String) httpSession.getAttribute("assistant_thread_id");
-            if (assistant_thread_id == null || assistant_thread_id.isEmpty()) {
+        try{
+            // 1. create Thread
+            HttpSession  httpSession =  request.getSession();
+            String assistant_thread_id = (String)httpSession.getAttribute("assistant_thread_id");
+            if(assistant_thread_id == null|| assistant_thread_id.equals("")){
                 response = comUtility.httpRequestBuilder(HttpMethod.POST, assistantURL, null);
                 ResponseThread responseThread = comUtility.getObjectResponse(response, "get thread", ResponseThread.class);
                 assistant_thread_id = responseThread.getId();
                 httpSession.setAttribute("assistant_thread_id", assistant_thread_id);
             }
 
-            // Step 2: Sending user input to the assistant
-            String threadAssistantURL = assistantURL + "/" + assistant_thread_id + "/messages";
-            data = new HashMap<>();
+            // 2. Sent user data
+            String thread_assistantURL = assistantURL +"/" + assistant_thread_id +"/messages";
+            data = new HashMap<String, String>();
             data.put("role", "user");
             data.put("content", prompt);
-            response = comUtility.httpRequestBuilder(HttpMethod.POST, threadAssistantURL, data);
+            response = comUtility.httpRequestBuilder(HttpMethod.POST, thread_assistantURL,  data );
             ResponseContent responseContent = comUtility.getObjectResponse(response, "Send Data", ResponseContent.class);
+            String messageId = responseContent.getId();
 
-            // Step 3: Requesting assistant's response
-            String assistantInfoURL = assistantURL + "/" + assistant_thread_id + "/runs";
-            data = new HashMap<>();
+            // 3. send assistant info
+            String assistantInfoURL = assistantURL + "/" + assistant_thread_id + "/runs"; // /v1/threads/thread_4DQN8y3zcRlwOxUds0DgrRZp/runs
+            data = new HashMap<String, String>();
             data.put("assistant_id", assistantId);
-            response = comUtility.httpRequestBuilder(HttpMethod.POST, assistantInfoURL, data);
+            response = comUtility.httpRequestBuilder(HttpMethod.POST, assistantInfoURL,  data );
             ResponseAssistantInfo responseAssistant = comUtility.getObjectResponse(response, "Get Assistant", ResponseAssistantInfo.class);
-            String runStatusURL = assistantInfoURL + "/" + responseAssistant.getId();
+            String runStatusURL = assistantInfoURL + "/" + responseAssistant.getId(); //  /v1/threads/thread_4DQN8y3zcRlwOxUds0DgrRZp/runs/run_JhX5VwL7Hrx6SmsTvIjs6JGc
 
-            // Step 4: Checking the run status of the assistant
+            // 4. Run status
             boolean isQueued = false;
-            while (true) {
-                response = comUtility.httpRequestBuilder(HttpMethod.GET, runStatusURL, null);
+            while(true){
+                response = comUtility.httpRequestBuilder(HttpMethod.GET, runStatusURL,  null );
                 String query = "$.status";
 
                 String status = JsonPath.read(response.body(), query);
-                if ("completed".equals(status)) {
+                if(status.equals("completed")){
                     break;
-                } else if ("in_progress".equals(status)) {
-                    Thread.sleep(5000); // Wait before checking the status again
-                } else {
+                }else if(status.equals("in_progress")){
+                    Thread.sleep(5000);
+                }else{
                     isQueued = true;
                     break;
                 }
             }
 
-            // Handling if the response is queued
-            if (isQueued) {
+            if(isQueued){
                 throw new Exception("Queueing");
             }
 
-            // Step 6: Retrieving the assistant's message
-            String messageAssistantURL = assistantURL + "/" + assistant_thread_id + "/messages";
-            response = comUtility.httpRequestBuilder(HttpMethod.GET, messageAssistantURL, null);
+            // 6. Get Message
+            String message_assistantURL = assistantURL +"/" + assistant_thread_id +"/messages";
+            response = comUtility.httpRequestBuilder(HttpMethod.GET, message_assistantURL,  null );
             String jsonResult = response.body();
 
-            String messageQuery = "$.data[?(@.role == 'assistant')].content[0].text.value";
-            Object result = JsonPath.read(jsonResult, messageQuery);
+            String query = "$.data[?(@.role == 'assistant')].content[0].text.value";
+            Object result = JsonPath.read(jsonResult, query);
             if (result instanceof JSONArray) {
                 JSONArray resultArray = (JSONArray) result;
                 if (!resultArray.isEmpty()) {
@@ -148,16 +137,15 @@ public class AssistantController {
                 responseObject.setData(comUtility.changeToWeb(value));
             }
 
-            // Finalizing the request
+            // finished
             comUtility.httpRequestBuilder(HttpMethod.GET, assistantInfoURL, null);
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
             try {
-                Thread.sleep(7000); // Waiting before returning the response
+                Thread.sleep(7000);
             } catch (InterruptedException ex) {
                 throw new RuntimeException(ex);
-            } finally {
-                // Returning an error message if an exception occurs
+            }finally {
                 return new ResponseObject("Server is busy or Refresh F5");
             }
         }
